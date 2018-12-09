@@ -60,5 +60,7 @@ function startBam() {
 
     });
 }
-
+connection.connect((err)=>{
+    if(err) throw err;
+});
 startBam();
