@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var table = require("cli-table");
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -12,7 +13,17 @@ var connection = mysql.createConnection({
 function startBam() {
     connection.query(`SELECT * FROM products`, function (err, res) {
         if (err) throw err;
-        console.log(res);
+     
+        for(i=0; i<res.length; i++){
+            console.log("------------------------");
+            console.log("Item number: "+res[i].item_id);
+            console.log("Item name: "+res[i].product_name);
+            console.log("Department: "+res[i].department_name);
+            console.log("Price per unit: "+res[i].price);
+            console.log("How many are left? "+res[i].stock_quantity);
+            console.log("------------------------");
+
+        }
         inquirer.prompt([{
                 message: "Please enter the item ID number that you wish to purchase.",
                 name: "productID"
