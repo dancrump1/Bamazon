@@ -42,6 +42,25 @@ function startMang() {
             })
                 break;
             case "Add to Inventory":
+            inquirer.prompt([
+                {
+                    message: "What product number would you like to update?",
+                    name: "productID"
+                },
+                {
+                    message: "How many would you like to add?",
+                    name: "productAmount"
+                }
+            ]).then((response)=>{
+                console.log("Test");
+                var productID = response.productID;
+                var productAmount = response.productAmount;
+                console.log(productID);
+                console.log(productAmount);
+                connection.query("update products set stock_quantity = ? where item_id = ?", [productAmount, productID], function(err, res){
+                    console.log("Product updated");
+                });
+            })
                 break;
             case "Add New Product":
                 break;
