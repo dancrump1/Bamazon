@@ -41,7 +41,7 @@ function startBam() {
                 console.log(`You've requested ${res.numberOfUnits} units.`);
                 if (response[0].stock_quantity > res.numberOfUnits) {
                     connection.query(`UPDATE products set ? WHERE ?`, [{
-                        stock_quantity: (response[0].stock_quantity - res.productID)
+                        stock_quantity: (response[0].stock_quantity - res.numberOfUnits)
                     }, {
                         item_id: res.productID
                     }]);

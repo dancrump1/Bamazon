@@ -34,41 +34,71 @@ function startMang() {
                 })
                 break;
             case "View Low Inventory":
-            connection.query("SELECT * FROM products where stock_quantity<5", function(err, res){
-                if(err) throw err;
-                for(i=0; i<res.length; i++){
-                    console.log(res[i]);
-                }
-            })
+                connection.query("SELECT * FROM products where stock_quantity<5", function (err, res) {
+                    if (err) throw err;
+                    for (i = 0; i < res.length; i++) {
+                        console.log(res[i]);
+                    }
+                });
                 break;
             case "Add to Inventory":
-            inquirer.prompt([
-                {
-                    message: "What product number would you like to update?",
-                    name: "productID"
-                },
-                {
-                    message: "How many would you like to add?",
-                    name: "productAmount"
-                }
-            ]).then((response)=>{
-                console.log("Test");
-                var productID = response.productID;
-                var productAmount = response.productAmount;
-                console.log(productID);
-                console.log(productAmount);
-                connection.query("update products set stock_quantity = ? where item_id = ?", [productAmount, productID], function(err, res){
-                    console.log("Product updated");
+                inquirer.prompt([{
+                        message: "What product number would you like to update?",
+                        name: "productID"
+                    },
+                    {
+                        message: "How many would you like to add?",
+                        name: "productAmount"
+                    }
+                ]).then((response) => {
+                    console.log("Test");
+                    var productID = response.productID;
+                    var productAmount = response.productAmount;
+                    console.log(productID);
+                    console.log(productAmount);
+                    connection.query("update products set stock_quantity = ? where item_id = ?", [productAmount, productID], function (err, res) {
+                        console.log("Product updated");
+                    });
                 });
-            })
                 break;
             case "Add New Product":
+                inquirer.prompt([{
+                        message: "What is the name of the product you would like to add?",
+                        name: "productName"
+                    },
+                    {
+                        message: "What department does the product belong to?",
+                        name: "productDepartment"
+
+                    },
+                    {
+                        message: "What is the price of the product you would like to add?",
+                        name: "productPrice"
+                    },
+                    {
+                        message: "What is the quantity of product you would like to add?",
+                        name: "productAmount"
+
+                    }
+                ]).then(function (res) {
+                    connection.query("INSERT INTO products SET?",
+                        [{
+                            product_name: res.productName,
+                            department_name: res.productDepartment,
+                            price: res.productPrice,
+                            stock_quantity: res.productAmount
+                        }],
+                        function (err) {
+                            if (err) throw err;
+                        });
+                    console.log("product added")
+                });
                 break;
         };
     });
 };
 
-connection.connect(function(err){
-    if(err) throw err;
+connection.connect(function (err) {
+    if (err) throw err;
 });
 startMang();
